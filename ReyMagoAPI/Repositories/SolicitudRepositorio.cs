@@ -29,7 +29,7 @@ namespace ReyMagoAPI.Repositories
         public async Task<IEnumerable<SolicitudIngreso>> GetSolicitudesByGrimorio(string name)
         {
                       
-               var grim =  (from grimorio in _context.Grimorios
+               var grim =  await (from grimorio in _context.Grimorios
                             join solicitud in _context.SolicitudIngresos on grimorio.Id equals solicitud.Grimorio_Id
                             where grimorio.Name == name
                               select new SolicitudIngreso
@@ -37,7 +37,7 @@ namespace ReyMagoAPI.Repositories
                                   Id = solicitud.Id,
                                   Nombre = solicitud.Nombre + " " + solicitud.Apellido,
                                   Identificacion = solicitud.Identificacion
-                              }).ToList();
+                              }).ToListAsync();
             
             return grim;
 
@@ -59,7 +59,7 @@ namespace ReyMagoAPI.Repositories
                 {
                     Random rnd = new();
                     int number = rnd.Next(1, _context.Grimorios.Count());
-                                     
+
                     solicitud.Grimorio_Id = number;
 
                     int row = await _context.SaveChangesAsync();
@@ -83,6 +83,7 @@ namespace ReyMagoAPI.Repositories
                 int row = await _context.SaveChangesAsync();
                 return row > 0;
             }
+           
             return false;
 
         }

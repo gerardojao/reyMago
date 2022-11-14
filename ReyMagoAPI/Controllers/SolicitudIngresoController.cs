@@ -10,6 +10,7 @@ using ReyMagoApi.DataAccess;
 using ReyMagoAPI.Core.Interfaces;
 using ReyMagoAPI.Core.Models.DTO;
 using AutoMapper;
+using ReyMagoApi.Core.Helper;
 
 namespace ReyMagoAPI.Controllers
 {
@@ -36,8 +37,8 @@ namespace ReyMagoAPI.Controllers
             return Ok(solicitudesDto);
         }
 
-        // GET: api/SolicitudIngreso/5
-        [HttpGet("{name}")]
+       
+        [HttpGet("ByGrimorio{name}")]
         public async Task<IActionResult> GetSolicitudIngreso(string name)
         {
             var solicitudIngreso = await _solicitudRepository.GetSolicitudesByGrimorio(name);
@@ -50,9 +51,16 @@ namespace ReyMagoAPI.Controllers
             {
                 var grimDTO = _mapper.Map<IEnumerable<SolicitudIngresoPorGrimorioDTO>>(solicitudIngreso);
                 return Ok(grimDTO);
-            }
+            }           
+        }
 
-           
+        // POST: api/SolicitudIngreso
+        [HttpPost]
+        public async Task<ActionResult> PostSolicitudIngreso(SolicitudIngresoDTO solicitudIngreso)
+        {
+            var solicitud = _mapper.Map<SolicitudIngreso>(solicitudIngreso);
+            await _solicitudRepository.InsertSolicitud(solicitud);
+            return Ok(solicitud);
         }
 
         // PUT: api/SolicitudIngreso/5
@@ -68,21 +76,13 @@ namespace ReyMagoAPI.Controllers
         [HttpPut("StatusUpdate/{id}")]
         public async Task<IActionResult> PutEstatusSolicitudIngreso(int id, SolicitudIngresoActualizacionEstadoDTO solicitudIngresoDto)
         {
+         
             var solicitudIngreso = _mapper.Map<SolicitudIngreso>(solicitudIngresoDto);
             solicitudIngreso.Id = id;
 
-            await _solicitudRepository.UpdateSolicitud(solicitudIngreso);
+            await _solicitudRepository.UpdateEstatusSolicitud(solicitudIngreso);
             return Ok(solicitudIngreso);
-        }
-
-        // POST: api/SolicitudIngreso
-        [HttpPost]
-        public async Task<ActionResult> PostSolicitudIngreso(SolicitudIngresoDTO solicitudIngreso)
-        {
-            var solicitud = _mapper.Map<SolicitudIngreso>(solicitudIngreso);
-            await _solicitudRepository.InsertSolicitud(solicitud);           
-            return Ok(solicitud);
-        }
+        }      
 
         // DELETE: api/SolicitudIngreso/5
         [HttpDelete("{id}")]
@@ -92,9 +92,6 @@ namespace ReyMagoAPI.Controllers
             return Ok(result);
         }
 
-        //private bool SolicitudIngresoExists(int id)
-        //{
-        //    return _context.SolicitudIngresos.Any(e => e.Id == id);
-        //}
+        
     }
 }
