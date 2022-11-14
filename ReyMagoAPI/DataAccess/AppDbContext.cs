@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReyMagoApi.Entities;
 using ReyMagoAPI.DataAccess;
+using ReyMagoAPI.Entities;
 
 namespace ReyMagoApi.DataAccess
 {
@@ -10,7 +11,8 @@ namespace ReyMagoApi.DataAccess
         {
 
         }
-        public DbSet<Estudiante> Estudiantes { get; set; }
+        //public DbSet<Estudiante> Estudiantes { get; set; }
+        public DbSet<SolicitudIngreso> SolicitudIngresos { get; set; }
         public DbSet<Afinidad> Afinidades { get; set;}
         public DbSet<Grimorio> Grimorios { get; set; }
 

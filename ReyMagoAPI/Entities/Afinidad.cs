@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReyMagoAPI.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ReyMagoApi.Entities
     {
         public Afinidad()
         {
-            Estudiante = new HashSet<Estudiante>();
+            SolicitudIngreso = new HashSet<SolicitudIngreso>();
         }
 
         [Key]
@@ -20,6 +21,6 @@ namespace ReyMagoApi.Entities
         [MaxLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        public ICollection<Estudiante> Estudiante { get; set; }
+        public ICollection<SolicitudIngreso> SolicitudIngreso { get; set; }
     }
 }

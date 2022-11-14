@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReyMagoApi.DataAccess;
+using ReyMagoAPI.Core.Interfaces;
+using ReyMagoAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddControllers();
 //COnexion a la BAse de Datos
 builder.Services.AddDbContext<AppDbContext>
     (options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")); });
+
+//agregamos los repositorios
+builder.Services.AddTransient<IGrimorioRepository, GrimorioRepositorio>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

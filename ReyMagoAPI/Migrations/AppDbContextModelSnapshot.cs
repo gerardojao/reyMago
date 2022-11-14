@@ -21,6 +21,51 @@ namespace ReyMagoAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ReyMagoAPI.Entities.SolicitudIngreso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Afinidad_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Apellido")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Edad")
+                        .HasMaxLength(2)
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Estatus")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Grimorio_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Identificacion")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Afinidad_Id");
+
+                    b.HasIndex("Grimorio_Id");
+
+                    b.ToTable("SolicitudIngresos");
+                });
+
             modelBuilder.Entity("ReyMagoApi.Entities.Afinidad", b =>
                 {
                     b.Property<int>("Id")
@@ -69,57 +114,6 @@ namespace ReyMagoAPI.Migrations
                             Id = 6,
                             Name = "Tierra"
                         });
-                });
-
-            modelBuilder.Entity("ReyMagoApi.Entities.Estudiante", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AfinidadId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Afinidad_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("Edad")
-                        .HasMaxLength(2)
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Estatus")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("GrimorioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grimorio_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Identificacion")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AfinidadId");
-
-                    b.HasIndex("GrimorioId");
-
-                    b.ToTable("Estudiantes");
                 });
 
             modelBuilder.Entity("ReyMagoApi.Entities.Grimorio", b =>
@@ -177,17 +171,17 @@ namespace ReyMagoAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ReyMagoApi.Entities.Estudiante", b =>
+            modelBuilder.Entity("ReyMagoAPI.Entities.SolicitudIngreso", b =>
                 {
                     b.HasOne("ReyMagoApi.Entities.Afinidad", "Afinidad")
-                        .WithMany("Estudiante")
-                        .HasForeignKey("AfinidadId")
+                        .WithMany("SolicitudIngreso")
+                        .HasForeignKey("Afinidad_Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ReyMagoApi.Entities.Grimorio", "Grimorio")
-                        .WithMany("Estudiante")
-                        .HasForeignKey("GrimorioId")
+                        .WithMany("SolicitudIngreso")
+                        .HasForeignKey("Grimorio_Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -198,12 +192,12 @@ namespace ReyMagoAPI.Migrations
 
             modelBuilder.Entity("ReyMagoApi.Entities.Afinidad", b =>
                 {
-                    b.Navigation("Estudiante");
+                    b.Navigation("SolicitudIngreso");
                 });
 
             modelBuilder.Entity("ReyMagoApi.Entities.Grimorio", b =>
                 {
-                    b.Navigation("Estudiante");
+                    b.Navigation("SolicitudIngreso");
                 });
 #pragma warning restore 612, 618
         }

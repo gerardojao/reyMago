@@ -26,14 +26,14 @@ namespace ReyMagoApi.Entities
         [Required(ErrorMessage = "Insert your Age")]
         public int Edad { get; set; } = 0;
 
-        public int Afinidad_id { get; set; }
+        public int Afinidad_Id { get; set; }
 
-        public int Grimorio_id { get; set; }
+        public int Grimorio_Id { get; set; }
 
         public bool Estatus { get; set; } = false;
 
-        public virtual Afinidad Afinidad { get; set; }
-        public virtual Grimorio Grimorio { get; set; }
+        [ForeignKey("Afinidad_Id")] public Afinidad Afinidad { get; set; }
+        [ForeignKey("Grimorio_Id")] public Grimorio Grimorio { get; set; }
 
     }
 }
