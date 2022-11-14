@@ -1,4 +1,5 @@
 ﻿using ApiBase.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReyMagoApi.DataAccess;
 using ReyMagoAPI.Core.Interfaces;
@@ -19,13 +20,30 @@ namespace ReyMagoAPI.Repositories
         {
             return await _context.SolicitudIngresos.ToListAsync();
         }
+        public async Task<SolicitudIngreso> GetSolicitud(int id)
+        {
+              var solicitud =  await _context.SolicitudIngresos.FirstOrDefaultAsync(x => x.Id == id);  
+                if (solicitud != null) 
+                {
+                var newSolicitud = from solicit in _context.SolicitudIngresos
+                                   from afin in _context.Afinidades
+                                   where solicit.Id == id
+                                   select new
+                                   {
+                                       solicit.Nombre,
+                                       solicit.Apellido,
+                                       solicit.Edad,
+                                       solicit.Identificacion,
+                                       Afinidad = afin.Name
+                                   };
+
+                return Ok(newSolicitud);                
+                }
+            return (BadRequestResult);
+        }
         public async Task<IEnumerable<SolicitudIngreso>> GetSolicitudesByGrimorio(string name)
         {
-            Respuesta<object> respuesta = new();
-
-            //var grim = new List<SolicitudIngreso>();
-            
-            
+                      
                var grim =  (from grimorio in _context.Grimorios
                               from solicitud in _context.SolicitudIngresos
                               where grimorio.Name == name
@@ -44,6 +62,38 @@ namespace ReyMagoAPI.Repositories
             _context.SolicitudIngresos.Add(solicitudIngreso);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> UpdateSolicitud(SolicitudIngreso solicitudIngreso)
+        {
+            var solicitud = await GetSolicitud(solicitudIngreso.Id);
+            if (solicitud != null)
+            {
+                solicitud.Nombre = solicitudIngreso.Nombre;
+                solicitud.Apellido = solicitudIngreso.Apellido;
+                solicitud.Identificacion = solicitudIngreso.Identificacion;
+                solicitud.Edad = solicitudIngreso.Edad;
+                solicitud.Afinidad_Id = solicitudIngreso.Afinidad_Id;
+
+                int row = await _context.SaveChangesAsync();
+                return row > 0;
+            }
+            return false;
+
+        }
+
+        public async Task<bool> DeleteSolicitud(int id)
+        {
+            var solicitud = await GetSolicitud(id);
+            if(solicitud != null)
+            {
+                _context.SolicitudIngresos.Remove(solicitud);               
+                int row = await _context.SaveChangesAsync();
+                return row > 0;
+            }
+            return false;             
+        }
+
+
 
     }
 }

@@ -55,36 +55,16 @@ namespace ReyMagoAPI.Controllers
            
         }
 
-        //// PUT: api/SolicitudIngreso/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutSolicitudIngreso(int id, SolicitudIngreso solicitudIngreso)
-        //{
-        //    if (id != solicitudIngreso.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        // PUT: api/SolicitudIngreso/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutSolicitudIngreso(int id, SolicitudIngresoDTO solicitudIngresoDto)
+        {
+            var solicitudIngreso = _mapper.Map<SolicitudIngreso>(solicitudIngresoDto);
+            solicitudIngreso.Id = id;
 
-        //    _context.Entry(solicitudIngreso).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!SolicitudIngresoExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+            await _solicitudRepository.UpdateSolicitud(solicitudIngreso);
+            return Ok(solicitudIngreso);
+        }
 
         // POST: api/SolicitudIngreso
         [HttpPost]
@@ -95,21 +75,13 @@ namespace ReyMagoAPI.Controllers
             return Ok(solicitud);
         }
 
-        //// DELETE: api/SolicitudIngreso/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteSolicitudIngreso(int id)
-        //{
-        //    var solicitudIngreso = await _context.SolicitudIngresos.FindAsync(id);
-        //    if (solicitudIngreso == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.SolicitudIngresos.Remove(solicitudIngreso);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+        // DELETE: api/SolicitudIngreso/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSolicitudIngreso(int id)
+        {
+            var result =  await _solicitudRepository.DeleteSolicitud(id);
+            return Ok(result);
+        }
 
         //private bool SolicitudIngresoExists(int id)
         //{
