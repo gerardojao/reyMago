@@ -11,6 +11,6 @@ public class AutomapperProfile : Profile
         
         CreateMap<SolicitudIngreso, SolicitudIngresoDTO>().ReverseMap();
         CreateMap<SolicitudIngreso, SolicitudIngresoPorGrimorioDTO>().ReverseMap();
-
+        CreateMap<SolicitudIngreso, SolicitudIngresoActualizacionEstadoDTO>().ReverseMap();
     }
 }

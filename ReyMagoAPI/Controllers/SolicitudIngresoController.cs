@@ -65,6 +65,15 @@ namespace ReyMagoAPI.Controllers
             await _solicitudRepository.UpdateSolicitud(solicitudIngreso);
             return Ok(solicitudIngreso);
         }
+        [HttpPut("StatusUpdate/{id}")]
+        public async Task<IActionResult> PutEstatusSolicitudIngreso(int id, SolicitudIngresoActualizacionEstadoDTO solicitudIngresoDto)
+        {
+            var solicitudIngreso = _mapper.Map<SolicitudIngreso>(solicitudIngresoDto);
+            solicitudIngreso.Id = id;
+
+            await _solicitudRepository.UpdateSolicitud(solicitudIngreso);
+            return Ok(solicitudIngreso);
+        }
 
         // POST: api/SolicitudIngreso
         [HttpPost]

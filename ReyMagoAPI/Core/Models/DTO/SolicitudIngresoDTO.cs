@@ -44,4 +44,10 @@ namespace ReyMagoAPI.Core.Models.DTO
        
     }
 
+    public class SolicitudIngresoActualizacionEstadoDTO
+    {
+        public bool Estatus { get; set; }
+        
+    }
+
 }

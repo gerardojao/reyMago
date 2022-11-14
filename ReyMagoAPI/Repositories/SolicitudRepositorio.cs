@@ -1,6 +1,8 @@
-﻿using ApiBase.Models;
+﻿
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ReyMagoApi.Core.Helper;
 using ReyMagoApi.DataAccess;
 using ReyMagoAPI.Core.Interfaces;
 using ReyMagoAPI.Entities;
@@ -22,31 +24,14 @@ namespace ReyMagoAPI.Repositories
         }
         public async Task<SolicitudIngreso> GetSolicitud(int id)
         {
-              var solicitud =  await _context.SolicitudIngresos.FirstOrDefaultAsync(x => x.Id == id);  
-                if (solicitud != null) 
-                {
-                var newSolicitud = from solicit in _context.SolicitudIngresos
-                                   from afin in _context.Afinidades
-                                   where solicit.Id == id
-                                   select new
-                                   {
-                                       solicit.Nombre,
-                                       solicit.Apellido,
-                                       solicit.Edad,
-                                       solicit.Identificacion,
-                                       Afinidad = afin.Name
-                                   };
-
-                return Ok(newSolicitud);                
-                }
-            return (BadRequestResult);
+            return await _context.SolicitudIngresos.FirstOrDefaultAsync(x => x.Id == id);           
         }
         public async Task<IEnumerable<SolicitudIngreso>> GetSolicitudesByGrimorio(string name)
         {
                       
                var grim =  (from grimorio in _context.Grimorios
-                              from solicitud in _context.SolicitudIngresos
-                              where grimorio.Name == name
+                            join solicitud in _context.SolicitudIngresos on grimorio.Id equals solicitud.Grimorio_Id
+                            where grimorio.Name == name
                               select new SolicitudIngreso
                               {
                                   Id = solicitud.Id,
@@ -63,6 +48,27 @@ namespace ReyMagoAPI.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> UpdateEstatusSolicitud(SolicitudIngreso solicitudIngreso)
+        {
+            var solicitud = await GetSolicitud(solicitudIngreso.Id);
+            if (solicitud != null)
+            {                
+                solicitud.Estatus = solicitudIngreso.Estatus;
+
+                if (solicitud.Estatus != false)
+                {
+                    Random rnd = new();
+                    int number = rnd.Next(1, _context.Grimorios.Count());
+                                     
+                    solicitud.Grimorio_Id = number;
+
+                    int row = await _context.SaveChangesAsync();
+                    return row > 0;
+                }               
+            }
+            return false;
+
+        }
         public async Task<bool> UpdateSolicitud(SolicitudIngreso solicitudIngreso)
         {
             var solicitud = await GetSolicitud(solicitudIngreso.Id);
@@ -90,7 +96,7 @@ namespace ReyMagoAPI.Repositories
                 int row = await _context.SaveChangesAsync();
                 return row > 0;
             }
-            return false;             
+            return true;             
         }
 
 

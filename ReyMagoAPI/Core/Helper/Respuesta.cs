@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ApiBase.Models
+namespace ReyMagoApi.Core.Helper
 {
     public class Respuesta<T>
     {

@@ -10,6 +10,7 @@ namespace ReyMagoAPI.Core.Interfaces
         Task<IEnumerable<SolicitudIngreso>> GetSolicitudesByGrimorio(string name);
         Task InsertSolicitud(SolicitudIngreso solicitudIngreso);
         Task<bool> UpdateSolicitud(SolicitudIngreso solicitudIngreso);
+        Task<bool> UpdateEstatusSolicitud(SolicitudIngreso solicitudIngreso);
         Task<bool> DeleteSolicitud(int id);
     }
 }
