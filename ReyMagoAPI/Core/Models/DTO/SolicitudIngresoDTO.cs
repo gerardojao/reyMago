@@ -1,15 +1,12 @@
 ﻿using ReyMagoApi.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReyMagoAPI.Entities
+namespace ReyMagoAPI.Core.Models.DTO
 {
-    public class SolicitudIngreso
+    public class SolicitudIngresoDTO
     {
-        [Key] public int Id { get; set; }
-
-
         [Required(ErrorMessage = "The FirstName is Required")]
         [MaxLength(20)]
         public string Nombre { get; set; } = string.Empty;
@@ -29,13 +26,22 @@ namespace ReyMagoAPI.Entities
 
         public int Afinidad_Id { get; set; }
 
-        [DefaultValue(7)]
-        public int Grimorio_Id { get; set; } = 7;
-
-        [DefaultValue(0)]
-        public bool Estatus { get; set; }
-
-        [ForeignKey("Afinidad_Id")] public Afinidad Afinidad { get; set; }
-        [ForeignKey("Grimorio_Id")] public Grimorio Grimorio { get; set; }
+        
     }
+
+    public class SolicitudIngresoPorGrimorioDTO
+    {
+        [Key] public int Id { get; set; }
+
+        [Required(ErrorMessage = "The FirstName is Required")]
+        [MaxLength(20)]
+        public string Nombre { get; set; } = string.Empty;
+
+        [MaxLength(10)]
+        [Required(ErrorMessage = "The Identification should be between 20 Characters")]
+        [RegularExpression("^[a-zA-Z]{1}[0-9]{9}$", ErrorMessage = "Only accept letters and numbers, Format allow V123456789")]
+        public string Identificacion { get; set; } = string.Empty;
+       
+    }
+
 }

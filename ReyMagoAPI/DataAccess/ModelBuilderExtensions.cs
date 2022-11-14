@@ -47,6 +47,12 @@ namespace ReyMagoAPI.DataAccess
                         Id = 5,
                         Name = "Desesperación",
                         Description = "Trébol de 5 hoja"
+                    },
+                    new Grimorio
+                    {
+                        Id = 7,
+                        Name = "No Asignado",
+                        Description = "No Asignado"
                     }
                 );
            

@@ -22,6 +22,13 @@ namespace ReyMagoApi.DataAccess
             foreach (var foreingKey in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
                 foreingKey.DeleteBehavior = DeleteBehavior.Restrict;
 
+            builder.Entity<SolicitudIngreso>()
+                 .Property(c => c.Grimorio_Id)
+                 .HasDefaultValue(7);
+            builder.Entity<SolicitudIngreso>()
+                .Property(c => c.Estatus)
+                .HasDefaultValue(0);
+
             base.OnModelCreating(builder);
 
             builder.Seed();

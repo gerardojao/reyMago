@@ -14,7 +14,10 @@ builder.Services.AddDbContext<AppDbContext>
     (options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")); });
 
 //agregamos los repositorios
-builder.Services.AddTransient<IGrimorioRepository, GrimorioRepositorio>();
+builder.Services.AddTransient<ISolicitudIngresoRepository, SolicitudRepositorio>();
+
+//MAPPER
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
