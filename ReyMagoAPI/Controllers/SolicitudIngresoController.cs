@@ -66,11 +66,10 @@ namespace ReyMagoAPI.Controllers
         // PUT: api/SolicitudIngreso/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSolicitudIngreso(int id, SolicitudIngresoDTO solicitudIngresoDto)
-        {
+        {            
             var solicitudIngreso = _mapper.Map<SolicitudIngreso>(solicitudIngresoDto);
-            solicitudIngreso.Id = id;
-
-            await _solicitudRepository.UpdateSolicitud(solicitudIngreso);
+            if (solicitudIngreso == null) return BadRequest();
+            await _solicitudRepository.UpdateSolicitud(id, solicitudIngreso);
             return Ok(solicitudIngreso);
         }
         [HttpPut("StatusUpdate/{id}")]
@@ -88,8 +87,13 @@ namespace ReyMagoAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSolicitudIngreso(int id)
         {
-            var result =  await _solicitudRepository.DeleteSolicitud(id);
-            return Ok(result);
+            var solicitud = await _solicitudRepository.GetSolicitud(id);
+            if (solicitud != null) 
+            {
+               await _solicitudRepository.DeleteSolicitud(id);
+                return Ok(solicitud);
+            } 
+            return NotFound("Solicitud not found");
         }
 
         

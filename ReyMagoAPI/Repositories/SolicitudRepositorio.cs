@@ -2,8 +2,10 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using ReyMagoApi.Core.Helper;
 using ReyMagoApi.DataAccess;
+using ReyMagoApi.Entities;
 using ReyMagoAPI.Core.Interfaces;
 using ReyMagoAPI.Entities;
 
@@ -20,11 +22,18 @@ namespace ReyMagoAPI.Repositories
 
         public async Task<IEnumerable<SolicitudIngreso>> GetSolicitudes()
         {
-            return await _context.SolicitudIngresos.ToListAsync();
+          return await _context.SolicitudIngresos
+                .Include(a => a.Afinidad) 
+                .Include(g=>g.Grimorio)
+                .ToListAsync();           
+
         }
         public async Task<SolicitudIngreso> GetSolicitud(int id)
         {
-            return await _context.SolicitudIngresos.FirstOrDefaultAsync(x => x.Id == id);           
+            return await _context.SolicitudIngresos
+                .Include(a => a.Afinidad)
+                .Include(g => g.Grimorio)
+                .FirstOrDefaultAsync(x => x.Id == id);           
         }
         public async Task<IEnumerable<SolicitudIngreso>> GetSolicitudesByGrimorio(string name)
         {
@@ -69,16 +78,16 @@ namespace ReyMagoAPI.Repositories
             return false;
 
         }
-        public async Task<bool> UpdateSolicitud(SolicitudIngreso solicitudIngreso)
+        public async Task<bool> UpdateSolicitud(int id, SolicitudIngreso solicitudIngreso)
         {
-            var solicitud = await GetSolicitud(solicitudIngreso.Id);
+            var solicitud = await GetSolicitud(id);
             if (solicitud != null)
             {
-                solicitud.Nombre = solicitudIngreso.Nombre;
-                solicitud.Apellido = solicitudIngreso.Apellido;
-                solicitud.Identificacion = solicitudIngreso.Identificacion;
+                if(solicitudIngreso.Nombre != null) solicitud.Nombre = solicitudIngreso.Nombre;
+                if (solicitudIngreso.Identificacion != null) solicitud.Apellido = solicitudIngreso.Apellido;
                 solicitud.Edad = solicitudIngreso.Edad;
-                solicitud.Afinidad_Id = solicitudIngreso.Afinidad_Id;
+                if (solicitudIngreso.Nombre != null) solicitud.Nombre = solicitudIngreso.Nombre;
+                if (solicitudIngreso.Afinidad_Id != null) solicitud.Afinidad_Id = solicitudIngreso.Afinidad_Id;
 
                 int row = await _context.SaveChangesAsync();
                 return row > 0;
