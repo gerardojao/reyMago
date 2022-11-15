@@ -11,6 +11,7 @@ using ReyMagoAPI.Core.Interfaces;
 using ReyMagoAPI.Core.Models.DTO;
 using AutoMapper;
 using ReyMagoApi.Core.Helper;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ReyMagoAPI.Controllers
 {
@@ -68,10 +69,13 @@ namespace ReyMagoAPI.Controllers
         public async Task<IActionResult> PutSolicitudIngreso(int id, SolicitudIngresoDTO solicitudIngresoDto)
         {            
             var solicitudIngreso = _mapper.Map<SolicitudIngreso>(solicitudIngresoDto);
-            if (solicitudIngreso == null) return BadRequest();
-            await _solicitudRepository.UpdateSolicitud(id, solicitudIngreso);
-            return Ok(solicitudIngreso);
+
+            return await _solicitudRepository.UpdateSolicitud(id, solicitudIngreso)
+                 ? Ok("Solicitud updated successfully")
+                 : NotFound("Solicitud not updated");
+           
         }
+
         [HttpPut("StatusUpdate/{id}")]
         public async Task<IActionResult> PutEstatusSolicitudIngreso(int id, SolicitudIngresoActualizacionEstadoDTO solicitudIngresoDto)
         {
@@ -87,13 +91,9 @@ namespace ReyMagoAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSolicitudIngreso(int id)
         {
-            var solicitud = await _solicitudRepository.GetSolicitud(id);
-            if (solicitud != null) 
-            {
-               await _solicitudRepository.DeleteSolicitud(id);
-                return Ok(solicitud);
-            } 
-            return NotFound("Solicitud not found");
+            return await _solicitudRepository.DeleteSolicitud(id)
+                ? Ok("Solicitud deleted successfully")
+                : NotFound("Solicitud not found");
         }
 
         
