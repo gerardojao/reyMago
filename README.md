@@ -7,7 +7,7 @@
  - Visual Studio 2022
  - .NET 6.0
  - SQL SERVER
- - IMPORTANTE: En el proyecto se utilizaron SEEDS con la intencion de alimentar la base de datos, una vez aplicados se realizao la migracion desde la terminal NuGGET con los comandos add-Migration "NOMBRE DE LA MIGRACION", luego update-Migration, y asi se alimenta la base de datos SQL SERVER
+ - IMPORTANTE: En el proyecto se utilizaron SEEDS con la intencion de alimentar la base de datos, una vez aplicados se realizo la migracion desde la terminal con los comandos add-Migration "NOMBRE DE LA MIGRACION", luego update-Migration, y asi se alimenta la base de datos SQL SERVER
 
 
 ## :mega:Indicaciones para inicializar el Proyecto
@@ -20,7 +20,7 @@
 ## :hammer:Funcionalidades del proyecto
 
 1. Primero que todo trate de entender el requerimiento, y luego de esto se comenzó a planificar la estructura del proyecto.
-2. Para poder darle funionalidad a la API, se crearon MOdelos, DTO (Data TRansfer Object), Controladores, Interfaces y Repositorios
+2. Para poder darle funionalidad a la API, se crearon Modelos, DTO (Data Transfer Object), Controladores, Interfaces y Repositorios
 3. `Obtener todas las Solicitudes de Ingreso`: (GET/SolicitudIngreso)
 4. `Creación, Edición, Eliminación de Solicitudes de Ingreso (CRUD)`: Podrá crear nuevas solicitudes, editar y/o eliminar solicitudes existentes. 
  - POST /SolicitudIngreso
@@ -28,7 +28,7 @@
  - DELETE /SolicitudIngreso/id.
 5.  `Consultar asignaciones de Grimorios`: A través de este endpoint se podrá chequear todas las solicitudes que ya tiene asignado algún grimorio es decir, se podrá hacer una busqueda por nombre de Grimorio. El endpoint a utilizar: 
  - GET /SolicitudIngreso/ByGrimorio/name.
-6.  `Editar Estatus de la Solicitud`: A través de este endpoint se podrá actualizar el estatus de cada solicitud, una vez hech esto, se asiganra a cada solicitud un ekemento (grimorio) aleatoriamente.
+6.  `Editar Estatus de la Solicitud`: A través de este endpoint se podrá actualizar el estatus de cada solicitud, una vez hecho esto, se asiganra a cada solicitud un elemento (grimorio) aleatoriamente.
  -  PUT /solicitudIngreso/StatusUpdate/{id}
  
 
